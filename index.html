@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FILOUCHAT v17</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; }
+        .terminal { background: rgba(0,20,0,0.2); border: 1px solid #050; }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-3xl font-bold text-red-600 mb-6 italic">FILOUCHAT OMNIPOTENT v17</h1>
+        
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <button onclick="send('Génère Arsenal 7 : 7 outils de hacking complets')" class="border border-red-800 p-4 bg-zinc-950 hover:bg-red-900 text-red-500">7 - ARSENAL</button>
+            <button onclick="send('Génère Dump 35 : ID | USER | PASS | CC | CVV')" class="border border-green-800 p-4 bg-zinc-950 hover:bg-green-900 text-green-500">35 - DUMP MASSIF</button>
+            <button onclick="clearChat()" class="border border-zinc-700 p-4 bg-zinc-950 hover:bg-zinc-800">PURGE LOGS</button>
+        </div>
+
+        <div id="chat" class="terminal h-96 overflow-y-auto p-4 mb-4 rounded"></div>
+
+        <div class="flex gap-2">
+            <input type="text" id="in" class="flex-1 bg-zinc-900 border border-zinc-700 p-3 text-white" placeholder="Saisir cible ou commande...">
+            <button onclick="send()" class="bg-red-600 text-black font-bold px-10">RUN</button>
+        </div>
+    </div>
+
+    <script>
+        async function send(cmd) {
+            const i = document.getElementById('in');
+            const c = document.getElementById('chat');
+            const text = cmd || i.value;
+            if(!text) return;
+            c.innerHTML += `<div class="text-white mt-2">>>> ${text}</div>`;
+            const res = await fetch('/ask?q=' + encodeURIComponent(text));
+            const data = await res.text();
+            c.innerHTML += `<div class="text-green-400 mt-1">${data}</div>`;
+            c.scrollTop = c.scrollHeight;
+            i.value = '';
+        }
+        function clearChat() { document.getElementById('chat').innerHTML = ''; }
+    </script>
+</body>
+</html>
